@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Pause Function
+# Allow user to view text before continuing
 pause() {
   read -p "Press enter to continue "
 }
@@ -9,14 +10,16 @@ pause() {
 read_file() {
   echo "Enter the name of the file you would like to read: "
   read file
+  # For loop to read file to std out
   for word in `cat $file`
   do
     echo $word
   done
-  
+  # Call options func
   options
+  # Take user input w/ read_choice func
   read_choice
-  
+  # User select encrypt/decrypt
   read -p "Enter 1 for Encrypt 2 for Decrypt: " user_selection
   if [ $user_selection == 1 ];
   then
@@ -27,9 +30,12 @@ read_file() {
 }
 
 # User Typed Message Function
+# User can type a message insted
+# Of read a file
 type_message() {
   echo "Enter your message: "
   read message
+  # Save the message to a file
   echo $message > message.txt
   file="message.txt"
   
@@ -47,6 +53,7 @@ type_message() {
 }
 
 # Menu Function
+# Display menu to user
 show_menu() {
   clear
   echo "---------"
@@ -61,12 +68,14 @@ show_menu() {
 
 # Options Function
 options() {
-  echo "Choose from ROT13 or Caesar Chipher"
+  echo "Choose from ROT13 or Caesar Cipher"
   echo "1. ROT13"
   echo "2. Caesar Cipher"
 }
 
 # Read Menu Option Function
+# Func to take the user's menu choice
+# Cases used for selection
 read_menu_option() {
   local choice
   read -p "Enter choice [1 - 3] " choice
@@ -78,6 +87,8 @@ read_menu_option() {
 }
 
 # Read Choice Function
+# Take integer value for number
+# Of transforms on message
 read_choice() {
   local choice
   read -p "Choose [1 -2] " choice
@@ -91,6 +102,8 @@ read_choice() {
 }
 
 # Encrypt Function
+# Naive encryption, shift letters
+# By value user selects
 encrypt() {
   echo "ENCRYPTING... "
   shifted=$(cat "$file")
@@ -104,6 +117,9 @@ encrypt() {
 }
 
 # Decrypt Function
+# User decides number of shifts
+# To decrypt original message
+# Same number must be used as encrypt
 decrypt() {
   echo "DECRYPTING... "
   shifted=$(cat "$file")
@@ -117,6 +133,7 @@ decrypt() {
 }
 
 # Output File Function
+# User choose file name for output
 output() {
   read -p "Enter output file name: " outfile
   echo $shifted > $outfile
@@ -126,6 +143,7 @@ output() {
 }
 
 # Display File Function
+# File is printed out to console
 display_output() {
   echo "Here is the content of " $outfile
   for word in `cat $outfile`
@@ -135,6 +153,7 @@ display_output() {
 }
 
 # Loop
+# Run until user enters '3' to quit
 while true
 do
   show_menu
